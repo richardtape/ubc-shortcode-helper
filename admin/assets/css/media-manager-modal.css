@@ -1,0 +1,59 @@
+.media-modal .media-custom{
+	min-height: 100%;
+}
+
+#ubc-shortcode-helper-container{
+	overflow: hidden;
+	clear: both;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+
+	#ubc-shortcode-helper-list-container{
+		width: 14%;
+		float: left;
+		min-height: 100%;
+		background: #f9f9f9;
+		border-right: 1px solid #dfdfdf;
+		margin-right: -1px;
+	}
+
+		#ubc-shortcode-helper-list-container ul{
+			
+		}
+
+			#ubc-shortcode-helper-list-container ul a{
+				text-decoration: none;
+				padding: 5px 15px;
+				display: block;
+			}
+
+			#ubc-shortcode-helper-list-container ul a:hover,
+			#ubc-shortcode-helper-list-container ul a.shortcode-a-showing{
+				color: black;
+			}
+
+	#ubc-shortcode-helper-content-container{
+		width: 86%;
+		float: right;
+		position: relative;
+	}
+
+		.ubc-shortcode-fields{
+			display: none; /* By default only the default message is shown, the fields are shown when the appropriate <a> is clicked in the menu */
+			padding: 20px;
+		}
+
+
+/* Generic form elements */
+.ubc-shortcode-fields label span{
+	display: block;
+	margin-bottom: 5px;
+}
+
+.small-input{
+	width: 35px;
+}

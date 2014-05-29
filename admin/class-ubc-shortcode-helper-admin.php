@@ -439,15 +439,16 @@
 		function custom_add_script()
 		{
 
-			wp_enqueue_script( 'custom', plugins_url( 'assets/js/media-manager-modal.js', __FILE__ ), array( 'media-views' ), false, true );
+			wp_enqueue_script( 'media-manager-modal-js', plugins_url( 'assets/js/media-manager-modal.js', __FILE__ ), array( 'media-views' ), false, true );
+			wp_enqueue_style( 'media-manager-modal-css', plugins_url( 'assets/css/media-manager-modal.css', __FILE__ ), array(), UBC_Shortcode_Helper::VERSION );
 
 		}/* custom_add_script() */
 
 		function custom_media_string( $strings, $post )
 		{
 
-			$strings['customMenuTitle'] 	= __( 'Custom Menu Title', 'custom' );
-			$strings['customButton'] 		= __( 'Custom Button', 'custom' );
+			$strings['customMenuTitle'] 	= __( 'Insert Shortcode', $this->plugin_slug );
+			$strings['customButton'] 		= __( 'Insert into post', $this->plugin_slug );
 
 			return $strings;
 
@@ -460,10 +461,53 @@
 			?>
 
 			<script type="text/html" id="tmpl-custom-shortcode-setting">
-				<label class="setting">
-					<span><?php _e('Title for thing'); ?></span>
-					<input type="text" class="alignment" data-setting="title" />
-				</label>
+				<div id="ubc-shortcode-helper-container">
+				
+					<div id="ubc-shortcode-helper-list-container">
+							
+					<ul>
+						<li><a href="#ubc-shortcode-helper-columns" data-fields_to_show="ubc-shortcode-helper-columns" title="<?php _e( 'Columns', $this->plugin_slug ); ?>"><?php _e( 'Columns', $this->plugin_slug ); ?></a></li>
+						<li><a href="#ubc-shortcode-helper-accordion" data-fields_to_show="ubc-shortcode-helper-accordion" title="<?php _e( 'Accordion', $this->plugin_slug ); ?>"><?php _e( 'Accordion', $this->plugin_slug ); ?></a></li>
+					</ul>
+
+					</div>
+
+					<div id="ubc-shortcode-helper-content-container">
+						
+						<div id="ubc-shortcode-helper-field-default-message" class="ubc-shortcode-fields"><?php _e( 'Please select which shortcode you would like to insert from the menu on the left.', $this->plugin_slug ); ?></div>
+
+						<div id="ubc-shortcode-helper-columns" class="ubc-shortcode-fields">
+							
+							<label class="setting" data-setting="numcols">
+								<span><?php _e( 'Number of columns', $this->plugin_slug ); ?></span>
+								<input id="numcols" type="text" value="{{ data.numcols }}" placeholder="4" class="small-input" />
+							</label>
+
+							<button class="button" id="submitnumcols" value="submitnumcols" disabled="disabled">
+								<?php esc_attr_e( 'Continue' ); ?>
+							</button>
+
+							<div class="column-content-template" style="display: none;">
+								<div class="col-details">
+									<label class="setting" data-setting="itemspan">
+										<span><?php _e( 'Span', $this->plugin_slug ); ?></span>
+										<input name="itemspan[]" type="text" value="{{ data.itemspan }}" placeholder="1" class="small-input" />
+									</label>
+									<label class="setting" data-setting="itemcontent">
+										<span><?php _e( 'Column Content', $this->plugin_slug ); ?></span>
+										<textarea name="itemcontent[]" type="text" value="{{ data.itemcontent }}" class=""></textarea>
+									</label>
+								</div>
+							</div>
+
+						</div>
+
+
+						<div id="ubc-shortcode-helper-accordion" class="ubc-shortcode-fields">Accordion</div>
+
+					</div>
+
+				</div>
 			</script>
 
 			<?php
