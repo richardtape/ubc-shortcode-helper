@@ -487,9 +487,9 @@
 
 								<div id="inner-column-content" class="shortcode-content-fields">
 
-									<label class="setting" data-setting="numcols">
+									<label class="setting" data-setting="number_of_columns">
 										<span><?php _e( 'Number of columns', $this->plugin_slug ); ?></span>
-										<input id="numcols" name="numcols" type="text" value="{{ data.numcols }}" placeholder="4" class="small-input" />
+										<input id="number_of_columns" name="number_of_columns" type="text" value="{{ data.number_of_columns }}" placeholder="4" class="small-input" />
 									</label>
 
 									<button class="button" id="submitnumcols" value="submitnumcols" disabled="disabled">
@@ -506,7 +506,7 @@
 										</label>
 										<label class="setting" data-setting="itemcontent">
 											<span><?php _e( 'Column Content', $this->plugin_slug ); ?></span>
-											<textarea name="itemcontent" id="itemcontent1" type="text" value="{{ data.itemcontent }}" class=""></textarea>
+											<textarea name="itemcontent" id="itemcontent1" value="{{ data.itemcontent }}" class=""></textarea>
 										</label>
 									</div>
 								</div>

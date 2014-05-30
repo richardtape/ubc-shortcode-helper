@@ -7,6 +7,9 @@
 		// Uses the Event Manager which adds Javascript Hooks for WordPress
 		wp.hooks.addFilter( 'shortcodeMenu.menu.menu', addColumnMenuItem, 10 );
 
+		// Test for the media modal html for the columns
+		wp.hooks.addFilter( 'shortcodeHTML.output', generateHTMLForColumnsShortcode, 10 );
+
 
 		/**
 		 * Add a sub item
@@ -88,6 +91,24 @@
 
 		};
 		
+
+		/**
+		 * Generate the shortcode for the columns based on what the user has enetered in the fields
+		 *
+		 * @author Richard Tape <@richardtape>
+		 * @package UBC Grid Columns
+		 * @since 1.0
+		 * @param (string) defaultHTML - the currently set html
+		 * @param (object) attrs - the data the user has entered in the media manager
+		 * @return (string) defaultHTML - modified html
+		 */
+
+		function generateHTMLForColumnsShortcode( defaultHTML, attrs )
+		{
+
+			return '<h1>YAAAY</h1>';
+
+		};
 
 	} );
 
