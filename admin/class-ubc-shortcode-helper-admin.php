@@ -395,7 +395,7 @@
 				'text' => 'Shortcode Helper',
 				'icon' => false,
 				'type' => 'menubutton',
-				'menu' => $shortcodeMenu
+				'menu' => array()
 			);
 
 			$buttonArray = apply_filters( $this->plugin_slug . 'shortcode_menu_array', $buttonArray );
@@ -478,27 +478,40 @@
 
 						<div id="ubc-shortcode-helper-columns" class="ubc-shortcode-fields">
 							
-							<label class="setting" data-setting="numcols">
-								<span><?php _e( 'Number of columns', $this->plugin_slug ); ?></span>
-								<input id="numcols" type="text" value="{{ data.numcols }}" placeholder="4" class="small-input" />
-							</label>
+							<span class="backforward-button-holder">
+								<a href="#" class="back-step-button">&larr; Back</a>
+								<a href="#" class="forward-step-button">&rarr; Forward</a>
+							</span>
 
-							<button class="button" id="submitnumcols" value="submitnumcols" disabled="disabled">
-								<?php esc_attr_e( 'Continue' ); ?>
-							</button>
+							<form id="ubc-shortcode-helper-columns-form">
 
-							<div class="column-content-template" style="display: none;">
-								<div class="col-details">
-									<label class="setting" data-setting="itemspan">
-										<span><?php _e( 'Span', $this->plugin_slug ); ?></span>
-										<input name="itemspan[]" type="text" value="{{ data.itemspan }}" placeholder="1" class="small-input" />
+								<div id="inner-column-content" class="shortcode-content-fields">
+
+									<label class="setting" data-setting="numcols">
+										<span><?php _e( 'Number of columns', $this->plugin_slug ); ?></span>
+										<input id="numcols" name="numcols" type="text" value="{{ data.numcols }}" placeholder="4" class="small-input" />
 									</label>
-									<label class="setting" data-setting="itemcontent">
-										<span><?php _e( 'Column Content', $this->plugin_slug ); ?></span>
-										<textarea name="itemcontent[]" type="text" value="{{ data.itemcontent }}" class=""></textarea>
-									</label>
+
+									<button class="button" id="submitnumcols" value="submitnumcols" disabled="disabled">
+										<?php esc_attr_e( 'Continue' ); ?>
+									</button>
+
 								</div>
-							</div>
+
+								<div class="column-content-template" style="display: none;">
+									<div class="col-details">
+										<label class="setting" data-setting="itemspan">
+											<span><?php _e( 'Span', $this->plugin_slug ); ?></span>
+											<input name="itemspan" id="itemspan1" type="text" value="{{ data.itemspan }}" placeholder="1" class="small-input" />
+										</label>
+										<label class="setting" data-setting="itemcontent">
+											<span><?php _e( 'Column Content', $this->plugin_slug ); ?></span>
+											<textarea name="itemcontent" id="itemcontent1" type="text" value="{{ data.itemcontent }}" class=""></textarea>
+										</label>
+									</div>
+								</div>
+
+							</form>
 
 						</div>
 

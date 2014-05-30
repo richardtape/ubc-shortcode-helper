@@ -13,6 +13,7 @@ wp.media.controller.Custom = wp.media.controller.State.extend({
 		// this model contains all the relevant data needed for the application
 		this.props = new Backbone.Model({ custom_data: '' });
 		this.props.on( 'change:custom_data', this.refresh, this );
+
 	},
 	
 	// called each time the model changes
@@ -153,6 +154,8 @@ wp.media.view.MediaFrame.Post = oldMediaFrame.extend({
 
 		this.content.set( view );
 
+		var that = this;
+
 		// On initialize, show the default message
 		jQuery( '#ubc-shortcode-helper-field-default-message' ).addClass( 'showing-fields' ).fadeIn();
 
@@ -194,15 +197,32 @@ wp.media.view.MediaFrame.Post = oldMediaFrame.extend({
 		
 		} );
 
+		jQuery( '#ubc-shortcode-helper-columns-form' ).on( 'submit', function( event ){
+			event.preventDefault();
+			createColumnContent();
+		} );
+
 		// When the number of columns 'continue' button is pressed
-		jQuery( '#submitnumcols' ).on( 'click', function(){
+		jQuery( '#submitnumcols, .forward-step-button' ).on( 'click', function( event ){
+
+			event.preventDefault();
+			createColumnContent();
+
+		} );
+
+		function createColumnContent(){
 
 			var thisInput = jQuery( '#numcols' );
 			var thisValue = thisInput.val();
 
 			// Cache the current content so we can go 'back'
-			var contentContainer = jQuery( '#ubc-shortcode-helper-columns' );
+			var contentContainer = jQuery( '#inner-column-content' );
 			var currentContent = contentContainer.html();
+			that.orgiginalContent = currentContent;
+
+			// Also grab the passed data
+			var formData = jQuery( '#ubc-shortcode-helper-columns-form' ).serialize();
+			that.originalFormData = formData;
 
 			// We need to create x-number entry boxes (where x = thisValue) for the user to input their content for each column
 			// each column has content and a 'span'
@@ -214,18 +234,96 @@ wp.media.view.MediaFrame.Post = oldMediaFrame.extend({
 				// Empty it
 				contentContainer.empty();
 
-				contentContainer.html( '<span class="content-holder">Content</span>' );
+				contentContainer.html( '<span class="empty-content">&nbsp;</span>' );
+				jQuery( '.forward-step-button' ).hide();
+
+				jQuery( '.backforward-button-holder' ).css( 'display', 'block' );
+				jQuery( '.back-step-button' ).fadeIn();
 
 				// Now clone the template multiple times and insert
 				for( var i = 0; i < thisValue; i++ ){
-					templateContent.clone().insertAfter( '.content-holder' );
+					
+					var thisContentToAdd = jQuery( templateContent );
+
+					var newIndex = i+1;
+
+					// Adjust the IDs
+					var regex = /^(.*)(\d)+$/i;
+
+					thisContentToAdd.find('*').each( function(){
+						var thisID = this.id || "";
+						var match = thisID.match(regex) || [];
+						if (match.length == 3) {
+							this.id = match[1] + (newIndex);
+							this.name = match[1] + (newIndex);
+						}
+						
+					} );
+
+					jQuery( thisContentToAdd ).insertAfter( '.empty-content' );
 				}
+
+				if( that.savedColumnFieldsData && that.savedColumnFieldsData !== 'undefined' )
+					loadSerializedData( 'ubc-shortcode-helper-columns-form', that.savedColumnFieldsData );
 
 				contentContainer.fadeIn();
 
 			} );
 
+		}
+
+		// When the back-button is clicked
+		jQuery( '.back-step-button' ).on( 'click', function(){
+
+			// Cache current setup so we can go 'forward' again should we wish
+			var currentFieldsContentContainer = jQuery( '.shortcode-content-fields' );
+			var currentFieldsContent = currentFieldsContentContainer.html();
+			that.currentFieldsContent = currentFieldsContent;
+
+			var columnFieldsData = jQuery( '#ubc-shortcode-helper-columns-form' ).serialize();
+			that.savedColumnFieldsData = columnFieldsData;
+
+			// Hide the fields
+			currentFieldsContentContainer.fadeOut( 100, function(){
+
+				// Empty the container
+				currentFieldsContentContainer.empty();
+
+				// Now re-show the original content
+				currentFieldsContentContainer.html( that.orgiginalContent );
+
+				loadSerializedData( 'ubc-shortcode-helper-columns-form', that.originalFormData );
+
+				jQuery( '.forward-step-button' ).show();
+				jQuery( '.back-step-button' ).hide();
+
+				// Fade it back in
+				currentFieldsContentContainer.fadeIn(100);
+
+			} );
+
 		} );
+
+		function loadSerializedData( formId, data )
+		{
+			
+			var tmp = data.split('&'), dataObj = {};
+			
+			// Bust apart the serialized data string into an obj
+			for (var i = 0; i < tmp.length; i++)
+			{
+				var keyValPair = tmp[i].split('=');
+				dataObj[keyValPair[0]] = keyValPair[1];
+			}
+			console.log( dataObj );
+
+			// Loop thru form and assign each HTML tag the appropriate value
+			jQuery('#' + formId + ' :input').each(function(index, element) {
+				if (dataObj[jQuery(this).attr('name')])
+					jQuery(this).val(dataObj[jQuery(this).attr('name')]);
+			});
+		}
+
 
 	}
 
